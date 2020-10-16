@@ -1,0 +1,18 @@
+(auth) {
+	extauth {
+		endpoint http://auth:8000
+		copy-request-header Authorization
+		copy-response-header X-Token
+		set-header X-Original-Uri {uri}
+		set-header X-Original-Method {method}
+	}
+}
+
+http://localhost:2015 {
+	route {
+		import auth
+		reverse_proxy logger:8001
+	}
+}
+
+

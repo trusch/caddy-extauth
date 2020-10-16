@@ -1,0 +1,27 @@
+---
+version: "3.8"
+configs:
+  caddyfile:
+    file: ./Caddyfile
+services:
+  caddy:
+    image: container.trusch.io/caddy-extauth/caddy:latest
+    command:
+      - caddy
+      - run
+      - -config=/Caddyfile
+    configs:
+      - source: caddyfile
+        target: /Caddyfile
+    ports:
+      - "0.0.0.0:2015:2015"
+    links:
+      - auth
+      - logger
+
+  auth:
+    image: container.trusch.io/caddy-extauth/dummy-auth:latest
+
+  logger:
+    image: container.trusch.io/caddy-extauth/http-logger:latest
+
